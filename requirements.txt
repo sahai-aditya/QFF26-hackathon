@@ -1,0 +1,8 @@
+dill==0.4.1
+numpy==2.5.4
+qiskit==2.6.1
+rustworkx==0.18.1
+scipy==1.18.1
+-e git+https://github.com/ProAltro/qff-hackathon.git@89265613ec267045e5f36be745fb2fd4d029dd10#egg=silentgroup
+stevedore==5.9.1
+typing_extensions==4.16.0
