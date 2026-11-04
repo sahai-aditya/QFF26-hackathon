@@ -1,0 +1,25 @@
+The Silent Group: solver.
+
+Breaks a three-party Diffie-Hellman exchange in a hidden finite abelian group using
+phase estimation on a sealed quantum device.
+
+Big picture
+-----------
+The device's register starts in |e>, a uniform superposition of the group's character
+eigenvectors. Every oracle gate is diagonal in that basis, so in each shot one random
+character chi is effectively picked, and oracle_gate(h, k) kicks the phase k*chi(h)
+(in turns) back onto its control qubit. For our four elements:
+
+    chi(g) = j/n,  chi(A) = a*j/n,  chi(B) = b*j/n,  chi(C) = c*j/n   (mod 1)
+
+where n = ord(g) and j is random each shot. All four phases come from the SAME chi
+when they are measured in the same circuit (same shot).
+
+The solver
+  1. reads these phases with iterative (one-qubit-per-element) phase estimation,
+  2. finds n from g's phase (continued fractions + lcm + cheap checks),
+  3. finds a, b, c by solving m = a*j (mod n) over several shots (with voting),
+  4. verifies every answer with a cheap "is this element the identity?" circuit,
+  5. returns {"order": n, "secret": a*b*c mod n}, or "none" if A, B or C is forged.
+
+Only the standard library, numpy and qiskit are used, as the rules require.
